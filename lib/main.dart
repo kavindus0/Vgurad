@@ -1,0 +1,35 @@
+import 'package:flutter/material.dart';
+import 'package:vguard/core/app_routes.dart';
+import 'package:vguard/pages/crop_disease_scanner_page.dart';
+import 'package:vguard/pages/disease_database_page.dart';
+import 'package:vguard/pages/expert_help_page.dart';
+import 'package:vguard/pages/farmer_tips_page.dart';
+import 'package:vguard/pages/home_page.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Vguard Crop Protection',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      initialRoute: AppRoutes.home,
+      routes: {
+        AppRoutes.home: (context) => const HomePage(),
+        AppRoutes.scanCrop: (context) => const CropDiseaseScannerPage(),
+        AppRoutes.diseaseDatabase: (context) => const DiseaseDatabasePage(),
+        AppRoutes.farmerTips: (context) => const FarmerTipsPage(),
+        AppRoutes.expertHelp: (context) => const ExpertHelpPage(),
+      },
+    );
+  }
+}
