@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vguard/core/app_constants.dart';
+import 'package:vguard/pages/disease_details.dart';
 
 class DiseaseItemCard extends StatelessWidget {
   final String title;
@@ -91,7 +92,27 @@ class DiseaseItemCard extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {
-                  print('View Details for $title tapped!');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => DiseaseDetailsPage(
+                            diseaseName: title,
+                            affectedCrop: crop,
+                            severity: riskLevel,
+                            cause: description,
+                            symptoms: [
+                              'Yellow spots',
+                              'Brown edges',
+                              'Wilting',
+                            ], // Pass actual symptoms here
+                            treatment:
+                                'Copper fungicide spray', // Pass actual treatment here
+                            prevention:
+                                'Proper drainage, avoid overhead watering', // Pass actual prevention here
+                          ),
+                    ),
+                  );
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primaryGreen,
