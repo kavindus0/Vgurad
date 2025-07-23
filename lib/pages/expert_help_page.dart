@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vguard/core/app_constants.dart';
+import 'package:vguard/pages/ask_advisor_page.dart';
 import 'package:vguard/widgets/expert_help_page/expert_card.dart';
 import 'package:vguard/widgets/expert_help_page/expert_tab_button.dart';
 
@@ -82,7 +83,14 @@ class ExpertHelpPage extends StatelessWidget {
                               label: 'Ask Question',
                               icon: Icons.question_answer_outlined,
                               isSelected: false,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AskAdvisorPage(),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           Expanded(

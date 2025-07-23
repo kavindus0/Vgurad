@@ -61,7 +61,6 @@ class AppSizes {
   static const double verticalSpacing = 20.0;
 }
 
-// Text Styles (Example - you can add more as needed)
 class AppTextStyles {
   static const TextStyle appBarTitle = TextStyle(
     color: AppColors.white,
