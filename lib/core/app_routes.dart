@@ -4,4 +4,6 @@ class AppRoutes {
   static const String diseaseDatabase = '/disease_database';
   static const String farmerTips = '/farmer_tips';
   static const String expertHelp = '/expert_help';
+
+  static String askAdvisor = '/ask_advisor';
 }

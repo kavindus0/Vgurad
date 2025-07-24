@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vguard/core/app_routes.dart';
+import 'package:vguard/pages/ask_advisor_page.dart';
 import 'package:vguard/pages/crop_disease_scanner_page.dart';
 import 'package:vguard/pages/disease_database_page.dart';
 import 'package:vguard/pages/expert_help_page.dart';
 import 'package:vguard/pages/farmer_tips_page.dart';
 import 'package:vguard/pages/home_page.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.diseaseDatabase: (context) => const DiseaseDatabasePage(),
         AppRoutes.farmerTips: (context) => const FarmerTipsPage(),
         AppRoutes.expertHelp: (context) => const ExpertHelpPage(),
+        AppRoutes.askAdvisor: (context) => const AskAdvisorPage(),
       },
     );
   }

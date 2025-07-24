@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:vguard/core/app_constants.dart';
 
-const String _geminiApiKey = 'AIzaSyBItHMcDz_NkJ4iWl3SmgFPM7QlMCo83ZQ';
+final apiKey = dotenv.env['_geminiApiKey'];
 
 class Message {
   final String text;
@@ -31,7 +32,7 @@ class _AskAdvisorPageState extends State<AskAdvisorPage> {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-1.5-flash',
-      apiKey: _geminiApiKey,
+      apiKey: apiKey ?? '',
       safetySettings: [
         SafetySetting(HarmCategory.harassment, HarmBlockThreshold.none),
         SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.none),
@@ -191,7 +192,7 @@ class _AskAdvisorPageState extends State<AskAdvisorPage> {
                 ),
                 const SizedBox(width: AppSizes.horizontalSpacing),
                 const Text(
-                  'Ask Our Expert',
+                  'AI Agricultural Advisor',
                   style: AppTextStyles.pageHeaderTitle,
                 ),
               ],
