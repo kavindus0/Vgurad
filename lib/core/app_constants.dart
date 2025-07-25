@@ -62,6 +62,18 @@ class AppSizes {
 }
 
 class AppTextStyles {
+  static const TextStyle heading1 = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+  );
+  static const TextStyle heading2 = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+  static const TextStyle bodyLarge = TextStyle(fontSize: 16);
+  static const TextStyle bodyMedium = TextStyle(fontSize: 14);
+  static const TextStyle bodySmall = TextStyle(fontSize: 12);
+
   static const TextStyle appBarTitle = TextStyle(
     color: AppColors.white,
     fontWeight: FontWeight.bold,

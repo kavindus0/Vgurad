@@ -138,10 +138,10 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [statusColor, statusColor.withOpacity(0.5)],
+                          colors: [statusColor, statusColor.withOpacity(0.7)],
                         ),
                         borderRadius: BorderRadius.circular(
-                          AppSizes.borderRadiusLarge,
+                          AppSizes.borderRadiusLarge * 0.75,
                         ),
                       ),
                       child: Text(

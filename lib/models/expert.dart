@@ -1,3 +1,6 @@
+// lib/models/expert.dart
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import for FieldValue
+
 class Expert {
   final String? id;
   final String name;
@@ -33,6 +36,7 @@ class Expert {
       'experience': experience,
       'languages': languages,
       'rating': rating,
+      'timestamp': FieldValue.serverTimestamp(),
     };
   }
 }

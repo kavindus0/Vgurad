@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vguard/core/app_routes.dart';
 import 'package:vguard/firebase_options.dart';
+import 'package:vguard/pages/admin_section_page.dart';
 import 'package:vguard/pages/ask_advisor_page.dart';
 import 'package:vguard/pages/crop_disease_scanner_page.dart';
 import 'package:vguard/pages/disease_database_page.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.farmerTips: (context) => const FarmerTipsPage(),
         AppRoutes.expertHelp: (context) => const ExpertHelpPage(),
         AppRoutes.askAdvisor: (context) => const AskAdvisorPage(),
+        AppRoutes.adminDashboard: (context) => const AdminSectionPage(),
       },
     );
   }

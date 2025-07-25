@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:vguard/models/weather_data.dart';
 
 class WeatherService {
-  static const String _apiKey = ''; //97f8981d34014c2f2fb3662f82222576
+  final apiKey = dotenv.env['_weatherApiKey'];
+  static const String _apiKey = '';
+
+  ///replace
   static const String _baseUrl =
       'https://api.openweathermap.org/data/2.5/weather';
 

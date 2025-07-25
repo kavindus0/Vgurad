@@ -1,3 +1,6 @@
+// lib/models/farmer_tip.dart
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import for FieldValue
+
 class FarmerTip {
   final String? id;
   final String title;
@@ -19,7 +22,7 @@ class FarmerTip {
       title: data['title'] ?? 'N/A',
       content: data['content'] ?? 'N/A',
       category: data['category'] ?? 'General',
-      dateAdded: (data['dateAdded']?.toDate()) ?? DateTime.now(),
+      dateAdded: (data['dateAdded'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 
@@ -28,7 +31,8 @@ class FarmerTip {
       'title': title,
       'content': content,
       'category': category,
-      'dateAdded': dateAdded,
+      'dateAdded': Timestamp.fromDate(dateAdded),
+      'timestamp': FieldValue.serverTimestamp(),
     };
   }
 }

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   // Function to handle sign out
   void _handleSignOut() async {
-    await _authService.signOut();
+    /// await _authService.signOut();
     if (mounted) {
       ScaffoldMessenger.of(
         context,
@@ -37,15 +37,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // Define the admin email
+  static const String _adminEmail = 'admin@gmail.com';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // This FAB should be shown only for regular users, or redirect admin
+          // For now, it always navigates to AskAdvisor. Consider conditional visibility or redirect
           Navigator.pushNamed(context, AppRoutes.askAdvisor);
         },
         backgroundColor: AppColors.darkGreen,
-        child: const Icon(Icons.question_answer, color: Colors.white),
+        child: const Icon(Icons.youtube_searched_for, color: Colors.white),
       ),
       appBar: AppBar(
         backgroundColor: AppColors.darkGreen,
@@ -64,30 +69,85 @@ class _HomePageState extends State<HomePage> {
                 return const CircularProgressIndicator(color: AppColors.white);
               } else if (snapshot.hasData && snapshot.data != null) {
                 // User is logged in
-                return Padding(
-                  padding: const EdgeInsets.all(AppSizes.paddingSmall),
-                  child: Row(
-                    children: [
-                      Text(
-                        snapshot.data!.displayName ??
-                            snapshot.data!.email ??
-                            'User',
-                        style: const TextStyle(
-                          color: AppColors.white,
-                          fontSize: 16,
+                final User? user = snapshot.data;
+                final bool isAdmin = user?.email == _adminEmail;
+
+                if (isAdmin) {
+                  // Admin user - display Admin button and Logout
+                  return Padding(
+                    padding: const EdgeInsets.all(AppSizes.paddingSmall),
+                    child: Row(
+                      children: [
+                        // Admin Panel button
+                        TextButton(
+                          onPressed: () {
+                            // If current route is not admin dashboard, navigate to it
+                            if (ModalRoute.of(context)?.settings.name !=
+                                AppRoutes.adminDashboard) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                AppRoutes.adminDashboard,
+                              );
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: AppColors.white,
+                            foregroundColor: AppColors.darkGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                AppSizes.borderRadiusMedium,
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSizes.paddingMedium,
+                            ),
+                          ),
+                          child: const Text(
+                            'Admin Panel',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: AppSizes.paddingSmall),
-                      IconButton(
-                        icon: const Icon(Icons.logout, color: AppColors.white),
-                        onPressed: _handleSignOut,
-                        tooltip: 'Logout',
-                      ),
-                    ],
-                  ),
-                );
+                        const SizedBox(width: AppSizes.paddingSmall),
+                        // Logout button for Admin
+                        IconButton(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: AppColors.white,
+                          ),
+                          onPressed: _handleSignOut,
+                          tooltip: 'Logout',
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  // Regular logged-in user - display user email and Logout
+                  return Padding(
+                    padding: const EdgeInsets.all(AppSizes.paddingSmall),
+                    child: Row(
+                      children: [
+                        Text(
+                          user?.displayName ?? user?.email ?? 'User',
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.paddingSmall),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: AppColors.white,
+                          ),
+                          onPressed: _handleSignOut,
+                          tooltip: 'Logout',
+                        ),
+                      ],
+                    ),
+                  );
+                }
               } else {
-                // User is not logged in
+                // User is not logged in - display Login button
                 return Padding(
                   padding: const EdgeInsets.all(AppSizes.paddingSmall),
                   child: TextButton(
@@ -116,17 +176,52 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(width: AppSizes.paddingSmall),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const HeroSection(),
-            const SizedBox(height: AppSizes.paddingXXLarge),
-            const FeatureCardsSection(),
-            const SizedBox(height: AppSizes.paddingXXLarge),
-            const FarmingConditionsSection(),
-            const SizedBox(height: AppSizes.paddingXXLarge),
-          ],
-        ),
+      // Body content changes based on user role
+      body: StreamBuilder<User?>(
+        stream: _authService.authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData && snapshot.data != null) {
+            final User? user = snapshot.data;
+            final bool isAdmin = user?.email == _adminEmail;
+
+            if (isAdmin) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (ModalRoute.of(context)?.settings.name !=
+                    AppRoutes.adminDashboard) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    AppRoutes.adminDashboard,
+                  );
+                }
+              });
+              return Container();
+            } else {
+              // If regular user, show regular content
+              return _buildRegularUserContent();
+            }
+          } else {
+            // If not logged in, show regular content (public view)
+            return _buildRegularUserContent();
+          }
+        },
+      ),
+    );
+  }
+
+  // Method to build content for regular users and logged-out state
+  Widget _buildRegularUserContent() {
+    return const SingleChildScrollView(
+      child: Column(
+        children: [
+          HeroSection(),
+          SizedBox(height: AppSizes.paddingXXLarge),
+          FeatureCardsSection(),
+          SizedBox(height: AppSizes.paddingXXLarge),
+          FarmingConditionsSection(),
+          SizedBox(height: AppSizes.paddingXXLarge),
+        ],
       ),
     );
   }

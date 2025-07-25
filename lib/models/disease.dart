@@ -1,3 +1,6 @@
+// lib/models/disease.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Disease {
   final String? id;
   final String name;
@@ -37,6 +40,7 @@ class Disease {
       'prevention': prevention,
       'category': category,
       'imageUrl': imageUrl,
+      'timestamp': FieldValue.serverTimestamp(),
     };
   }
 }
