@@ -1,32 +1,42 @@
-// lib/models/disease_model.dart
 class Disease {
+  final String? id;
   final String name;
-  final String affectedCrop;
-  final String severity;
-  final String cause;
-  final List<String> symptoms;
+  final String symptoms;
   final String treatment;
   final String prevention;
+  final String category;
+  final String? imageUrl;
 
   Disease({
+    this.id,
     required this.name,
-    required this.affectedCrop,
-    required this.severity,
-    required this.cause,
     required this.symptoms,
     required this.treatment,
     required this.prevention,
+    required this.category,
+    this.imageUrl,
   });
 
-  factory Disease.fromJson(Map<String, dynamic> json) {
+  factory Disease.fromFirestore(Map<String, dynamic> data, String id) {
     return Disease(
-      name: json['name'],
-      affectedCrop: json['affectedCrop'],
-      severity: json['severity'],
-      cause: json['cause'],
-      symptoms: List<String>.from(json['symptoms']),
-      treatment: json['treatment'],
-      prevention: json['prevention'],
+      id: id,
+      name: data['name'] ?? 'N/A',
+      symptoms: data['symptoms'] ?? 'N/A',
+      treatment: data['treatment'] ?? 'N/A',
+      prevention: data['prevention'] ?? 'N/A',
+      category: data['category'] ?? 'General',
+      imageUrl: data['imageUrl'],
     );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'name': name,
+      'symptoms': symptoms,
+      'treatment': treatment,
+      'prevention': prevention,
+      'category': category,
+      'imageUrl': imageUrl,
+    };
   }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124227158851",
+    "project_id": "vguard-d1153",
+    "storage_bucket": "vguard-d1153.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124227158851:android:26cbf299d96335dd4465f6",
+        "android_client_info": {
+          "package_name": "com.example.vguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3ScThRpiBRDsLKs2djdcu6FtW2YIk2TE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

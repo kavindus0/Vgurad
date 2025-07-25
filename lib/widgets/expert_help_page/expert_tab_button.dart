@@ -27,7 +27,7 @@ class ExpertTabButton extends StatelessWidget {
           color:
               isSelected
                   ? AppColors.primaryGreen.withOpacity(0.1)
-                  : AppColors.transparent,
+                  : AppColors.grey100,
           borderRadius: BorderRadius.circular(AppSizes.borderRadiusMedium),
           border: isSelected ? Border.all(color: AppColors.primaryGreen) : null,
         ),

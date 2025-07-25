@@ -20,12 +20,23 @@ class HeroSection extends StatelessWidget {
             horizontal: screenWidth * 0.05,
           ),
           decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/hero.png'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.7),
+                BlendMode.darken,
+              ),
+            ),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.primaryGreen, // Start color
-                AppColors.darkGreen, // End color
+                AppColors.primaryGreen.withOpacity(0.2),
+                AppColors.darkGreen.withOpacity(0.3),
               ],
             ),
             borderRadius: BorderRadius.circular(20.0),
@@ -80,7 +91,6 @@ class HeroSection extends StatelessWidget {
             crossAxisCount: screenWidth < 600 ? 2 : 4,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            // Adjusted childAspectRatio to make cards taller and prevent overflow
             childAspectRatio:
                 screenWidth < 600 ? 1.8 : 2.2, // Made taller for small screens
             crossAxisSpacing: AppSizes.horizontalSpacing,

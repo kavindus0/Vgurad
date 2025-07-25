@@ -5,7 +5,12 @@ class CategoryChip extends StatelessWidget {
   final String label;
   final bool isSelected;
 
-  const CategoryChip({super.key, required this.label, this.isSelected = false});
+  const CategoryChip({
+    super.key,
+    required this.label,
+    this.isSelected = false,
+    required void Function() onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +20,14 @@ class CategoryChip extends StatelessWidget {
       onSelected: (selected) {
         print('Category chip "$label" ${selected ? "selected" : "unselected"}');
       },
-      selectedColor: AppColors.primaryGreen,
+      selectedColor: AppColors.darkGreen,
       labelStyle: TextStyle(
         color: isSelected ? AppColors.white : AppColors.black87,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
       backgroundColor: AppColors.grey200,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLarge),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLarge * 0.6),
         side:
             isSelected ? BorderSide.none : BorderSide(color: AppColors.grey300),
       ),

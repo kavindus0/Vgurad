@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:vguard/core/app_constants.dart';
 
 final apiKey = dotenv.env['_geminiApiKey'];
@@ -8,7 +9,7 @@ final apiKey = dotenv.env['_geminiApiKey'];
 class Message {
   final String text;
   final bool isUser; // true for user, false for advisor
-  final bool isLoading; // true if awaiting response
+  final bool isLoading;
 
   Message(this.text, {required this.isUser, this.isLoading = false});
 }
@@ -271,12 +272,14 @@ class _AskAdvisorPageState extends State<AskAdvisorPage> {
                         _isSending ? AppColors.grey400 : AppColors.primaryGreen,
                     child:
                         _isSending
-                            ? const SizedBox(
+                            ? SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.white,
-                                strokeWidth: 2,
+                              child: Center(
+                                child: LoadingAnimationWidget.inkDrop(
+                                  color: AppColors.primaryGreen,
+                                  size: 20,
+                                ),
                               ),
                             )
                             : const Icon(Icons.send, color: AppColors.white),
@@ -323,12 +326,14 @@ class _AskAdvisorPageState extends State<AskAdvisorPage> {
         ),
         child:
             message.isLoading
-                ? const SizedBox(
+                ? SizedBox(
                   width: 24,
                   height: 24,
-                  child: CircularProgressIndicator(
-                    color: AppColors.primaryGreen,
-                    strokeWidth: 2,
+                  child: Center(
+                    child: LoadingAnimationWidget.inkDrop(
+                      color: AppColors.primaryGreen,
+                      size: 30,
+                    ),
                   ),
                 )
                 : Text(
