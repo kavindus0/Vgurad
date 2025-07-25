@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:vguard/core/app_routes.dart';
 import 'package:vguard/firebase_options.dart';
 import 'package:vguard/pages/admin_section_page.dart';
@@ -15,7 +16,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // await InitialDataLoader().loadAllInitialData();
 
   runApp(const MyApp());
 }
@@ -32,15 +32,41 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: AppRoutes.home,
-      routes: {
-        AppRoutes.home: (context) => const HomePage(),
-        AppRoutes.scanCrop: (context) => const CropDiseaseScannerPage(),
-        AppRoutes.diseaseDatabase: (context) => const DiseaseDatabasePage(),
-        AppRoutes.farmerTips: (context) => const FarmerTipsPage(),
-        AppRoutes.expertHelp: (context) => const ExpertHelpPage(),
-        AppRoutes.askAdvisor: (context) => const AskAdvisorPage(),
-        AppRoutes.adminDashboard: (context) => const AdminSectionPage(),
+      onGenerateRoute: (settings) {
+        final Widget page;
+        switch (settings.name) {
+          case AppRoutes.home:
+            page = const HomePage();
+            break;
+          case AppRoutes.scanCrop:
+            page = const CropDiseaseScannerPage();
+            break;
+          case AppRoutes.diseaseDatabase:
+            page = const DiseaseDatabasePage();
+            break;
+          case AppRoutes.farmerTips:
+            page = const FarmerTipsPage();
+            break;
+          case AppRoutes.expertHelp:
+            page = const ExpertHelpPage();
+            break;
+          case AppRoutes.askAdvisor:
+            page = const AskAdvisorPage();
+            break;
+          case AppRoutes.adminDashboard:
+            page = const AdminSectionPage();
+            break;
+          default:
+            page = const Text('Error: Unknown route');
+        }
+
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child: page,
+          settings: settings,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       },
     );
   }

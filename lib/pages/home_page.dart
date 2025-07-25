@@ -45,12 +45,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // This FAB should be shown only for regular users, or redirect admin
-          // For now, it always navigates to AskAdvisor. Consider conditional visibility or redirect
           Navigator.pushNamed(context, AppRoutes.askAdvisor);
         },
         backgroundColor: AppColors.darkGreen,
-        child: const Icon(Icons.youtube_searched_for, color: Colors.white),
+        child: const Icon(Icons.chat_bubble_outline, color: Colors.white),
       ),
       appBar: AppBar(
         backgroundColor: AppColors.darkGreen,

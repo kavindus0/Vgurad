@@ -131,6 +131,7 @@ class _LoginPopupState extends State<LoginPopup> {
               const SizedBox(height: AppSizes.paddingXLarge),
               SizedBox(
                 width: double.infinity,
+                height: 45,
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : _signInWithGoogle,
                   style: ElevatedButton.styleFrom(
@@ -173,12 +174,14 @@ class _LoginPopupState extends State<LoginPopup> {
                     color: AppColors.grey600,
                   ),
                   filled: true,
-                  fillColor: AppColors.grey100,
+                  fillColor: AppColors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                       AppSizes.borderRadiusMedium,
                     ),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(
+                      color: AppColors.white70.withOpacity(0.1),
+                    ),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: AppSizes.paddingMedium,
@@ -196,12 +199,14 @@ class _LoginPopupState extends State<LoginPopup> {
                     color: AppColors.grey600,
                   ),
                   filled: true,
-                  fillColor: AppColors.grey100,
+                  fillColor: AppColors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                       AppSizes.borderRadiusMedium,
                     ),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(
+                      color: AppColors.white70.withOpacity(0.1),
+                    ),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: AppSizes.paddingMedium,
