@@ -276,7 +276,7 @@ class _AskAdvisorPageState extends State<AskAdvisorPage> {
                               width: 20,
                               height: 20,
                               child: Center(
-                                child: LoadingAnimationWidget.inkDrop(
+                                child: LoadingAnimationWidget.progressiveDots(
                                   color: AppColors.primaryGreen,
                                   size: 20,
                                 ),

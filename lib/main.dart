@@ -5,7 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:vguard/core/app_routes.dart';
 import 'package:vguard/firebase_options.dart';
 import 'package:vguard/pages/admin_section_page.dart';
-import 'package:vguard/pages/ask_advisor_page.dart';
+import 'package:vguard/pages/ai_advisor_page.dart';
 import 'package:vguard/pages/crop_disease_scanner_page.dart';
 import 'package:vguard/pages/disease_database_page.dart';
 import 'package:vguard/pages/expert_help_page.dart';

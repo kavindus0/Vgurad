@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:vguard/models/weather_data.dart';
 
 class WeatherService {
-  final apiKey = dotenv.env['_weatherApiKey'];
-  static const String _apiKey = '';
+  /// final String apiKey = dotenv.env['_weatherApiKey'] ?? '';
+  static final String _apiKey = '';
 
   ///replace
   static const String _baseUrl =
