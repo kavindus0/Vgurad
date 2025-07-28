@@ -55,11 +55,11 @@ class _LoginPopupState extends State<LoginPopup> {
     });
 
     try {
-      ////  await _authService.signInWithGoogle();
+      await _authService.signInWithGoogle();
       if (mounted) {
         Navigator.of(context).pop(); // Close the popup on successful login
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Signed in with Google successfully!')),
+          const SnackBar(content: Text('Cannot sign in with Google yet')),
         );
       }
     } catch (e) {

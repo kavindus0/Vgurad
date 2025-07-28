@@ -55,7 +55,7 @@ class AppSizes {
   static const double iconSizeHero = 50.0;
 
   static const double buttonHeight = 50.0;
-  static const double cardElevation = 0.0;
+  static const double cardElevation = 1.0;
   static const double dividerThickness = 1.0;
   static const double horizontalSpacing = 20.0;
   static const double verticalSpacing = 20.0;

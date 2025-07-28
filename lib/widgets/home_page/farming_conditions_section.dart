@@ -22,66 +22,56 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
   @override
   void initState() {
     super.initState();
-
-    // _fetchWeather();
-    _getCurrentLocationAndFetchWeather();
+    _weatherFuture = _getWeatherInitially();
   }
 
-  Future<void> _fetchWeather() async {
-    setState(() {
-      _weatherFuture = _weatherService.fetchWeatherData(
+  // A method to handle the initial weather fetching
+  Future<WeatherData> _getWeatherInitially() async {
+    try {
+      Position position = await _determinePosition();
+      return await _weatherService.fetchWeatherData(
+        position.latitude,
+        position.longitude,
+      );
+    } catch (e) {
+      print('Error during initial weather fetch: $e');
+      return await _weatherService.fetchWeatherData(
         _defaultLatitude,
         _defaultLongitude,
       );
-    });
+    }
   }
 
-  Future<void> _getCurrentLocationAndFetchWeather() async {
+  Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled, handle error or show message
-      print('Location services are disabled.');
-      // Fallback to default location
-      _fetchWeather();
-      return;
+      throw Exception('Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, handle error
-        print('Location permissions are denied.');
-        _fetchWeather();
-        return;
+        throw Exception('Location permissions are denied.');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      print('Location permissions are permanently denied.');
-      _fetchWeather();
-      return;
+      throw Exception('Location permissions are permanently denied.');
     }
 
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      );
-      setState(() {
-        _weatherFuture = _weatherService.fetchWeatherData(
-          position.latitude,
-          position.longitude,
-        );
-      });
-    } catch (e) {
-      print('Error getting location: $e');
-      // Fallback to default location on error
-      _fetchWeather();
-    }
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.low,
+    );
+  }
+
+  Future<void> _refreshWeather() async {
+    setState(() {
+      _weatherFuture = _getWeatherInitially();
+    });
   }
 
   @override
@@ -112,11 +102,16 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
                 ),
                 // For the 'Optimal' tag to show dynamic status
                 FutureBuilder<WeatherData>(
-                  future: _weatherFuture,
+                  future:
+                      _weatherFuture, // This is where the late variable is used
                   builder: (context, snapshot) {
-                    String status = '...';
-                    Color statusColor = AppColors.grey100;
-                    if (snapshot.hasData) {
+                    String status = 'Loading...';
+                    Color statusColor =
+                        AppColors.grey100; // Changed initial color to grey
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      status = 'Loading...';
+                      statusColor = AppColors.grey100;
+                    } else if (snapshot.hasData) {
                       status = _weatherService.getOverallStatus(snapshot.data!);
                       if (status == 'Optimal') {
                         statusColor = AppColors.green;
@@ -158,7 +153,6 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
               ],
             ),
             const SizedBox(height: AppSizes.paddingXLarge),
-            // FutureBuilder for the condition items
             FutureBuilder<WeatherData>(
               future: _weatherFuture,
               builder: (context, snapshot) {
@@ -171,7 +165,31 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
                   );
                 } else if (snapshot.hasError) {
                   return Center(
-                    child: Text('Failed to load weather: ${snapshot.error}'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: AppColors.red,
+                          size: 40,
+                        ),
+                        const SizedBox(height: AppSizes.paddingSmall),
+                        Text(
+                          'Failed to load weather: \n${snapshot.error}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: AppColors.black87),
+                        ),
+                        const SizedBox(height: AppSizes.paddingSmall),
+                        ElevatedButton(
+                          onPressed: _refreshWeather,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.darkGreen,
+                            foregroundColor: AppColors.white,
+                          ),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
                   );
                 } else if (snapshot.hasData) {
                   final weather = snapshot.data!;
@@ -217,8 +235,23 @@ class _FarmingConditionsSectionState extends State<FarmingConditionsSection> {
                     ],
                   );
                 } else {
-                  return const Center(
-                    child: Text('No weather data available.'),
+                  // This case should ideally not be reached if Future.error is used on failure
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('No weather data available.'),
+                        const SizedBox(height: AppSizes.paddingSmall),
+                        ElevatedButton(
+                          onPressed: _refreshWeather,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.darkGreen,
+                            foregroundColor: AppColors.white,
+                          ),
+                          child: const Text('Load Weather'),
+                        ),
+                      ],
+                    ),
                   );
                 }
               },

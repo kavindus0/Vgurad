@@ -16,7 +16,8 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: AppSizes.cardElevation,
+      elevation: AppSizes.cardElevation * 0.4,
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.borderRadiusMedium),
         side: BorderSide(

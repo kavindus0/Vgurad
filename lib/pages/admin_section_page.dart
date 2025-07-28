@@ -34,6 +34,7 @@ class _AdminSectionPageState extends State<AdminSectionPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged out from Admin section.')),
       );
+
       Navigator.of(context).pushReplacementNamed('/');
     }
   }
